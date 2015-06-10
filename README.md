@@ -1,0 +1,1 @@
+An api server for the WSU Hackathon written in Go.

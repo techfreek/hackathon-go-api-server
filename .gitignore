@@ -25,3 +25,11 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+
+## Configuration file with api keys
+config.json
+
+#Misc ignored files
+hosted-images/
+logfile
