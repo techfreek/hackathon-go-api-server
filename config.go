@@ -4,7 +4,6 @@ import (
 	"os"
 	"fmt"
 	"encoding/json"
-	"strings"
 )
 
 type Eventbrite struct {
@@ -15,6 +14,7 @@ type Eventbrite struct {
 var Config struct {
 	Event Eventbrite `json:"eventbrite"`
 	Img_dir string `json:"imagesDir"`
+	Max_Spots int `json:"spots"`
 }
 
 var ConfigFileName = "config.json";
@@ -29,8 +29,8 @@ func create_Config() {
 	fmt.Printf("Oathtoken: "); fmt.Scan(Config.Event.Oathtoken);
 	fmt.Print("Misc Configuration: ");
 	fmt.Printf("Img Dir:   "); fmt.Scan(Config.Img_dir);
-	
-	str, _ := json.Marshal(config);
+	fmt.Printf("Max Spots:   "); fmt.Scan(Config.Max_Spots);
+	str, _ := json.Marshal(Config);
 	_, err := conf.Write(str);
 	
 	if err != nil {
@@ -45,16 +45,17 @@ func Init_Config() {
 	defer conf.Close();
 
 	if err != nil {
-		if os.IsNotExit(err) {
+		if os.IsNotExist(err) {
 			fmt.Println(err);
 		} else {
-			return create_config()
+			create_Config()
+			return
 		}
 	}
 
 	//start decoding
 	decoder := json.NewDecoder(conf);
-	err := decoder.Decode(&Config)
+	err = decoder.Decode(&Config)
 	if err != nil {
 		fmt.Println(err);
 	}

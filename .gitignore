@@ -33,3 +33,6 @@ config.json
 #Misc ignored files
 hosted-images/
 logfile
+
+# Ignore builds
+hackathon-go-api-server

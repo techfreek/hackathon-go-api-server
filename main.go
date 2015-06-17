@@ -2,30 +2,18 @@ package main
 
 import (
 	"net/http"
-	"time"
-	"fmt"
-
-	"github.com/WSU-ACM/hackathon-go-api-server/Routes"
+	"log"
 )
-
-var server Server
 
 func main() {
 	//initialize Config
 	Init_Config()
 
-	//set up router
-	server := &http.Server{
-		Addr: ":3000",
-		Handler: Router,
-		ReadTimeout: 10 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		MaxHeaderBytes: 1 << 20,
-	}
+	//get router
+	router := BuildRouter()
+
+	http.Handle("/", router);
 
 	//start listening
-	err := server.ListenAndServer()
-	if err != nil {
-		fmt.Println(err)
-	}
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }
