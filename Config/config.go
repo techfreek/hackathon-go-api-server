@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"os"
@@ -17,7 +17,7 @@ var Config struct {
 	Max_Spots int `json:"spots"`
 }
 
-var ConfigFileName = "config.json";
+var ConfigFileName = "../config.json";
 
 //If no config file has been created, create one
 func create_Config() {
