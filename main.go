@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"log"
+	//"log"
 	"github.com/WSU-ACM/hackathon-go-api-server/Eventbrite"
 	"github.com/WSU-ACM/hackathon-go-api-server/Config"
 )
@@ -15,9 +15,10 @@ func main() {
 	router := BuildRouter()
 
 	http.Handle("/", router);
+	eventbrite.GetRemainingSpots()
 
-	log.Fatal(eventbrite.GetRemainingSpots())
+	//log.Fatal()
 
 	//start listening
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	//log.Fatal(http.ListenAndServe(":3000", nil))
 }

@@ -2,7 +2,9 @@ package eventbrite
 
 import(
 	"log"
+	"fmt"
 	"strings"
+	"encoding/json"
 	"net/http"
 	"io/ioutil"
 	"github.com/WSU-ACM/hackathon-go-api-server/Config"
@@ -18,20 +20,34 @@ func GetRemainingSpots() int {
 	urlParts := []string{
 		eventbrite_url,
 		config.Config.Event.Event_id,
-		"?token",
+		"?format=json",
+		"&token=",
 		config.Config.Event.Oathtoken,
 	}
 
 	url := strings.Join(urlParts, "")
+	var body map[string]interface{}
+
+	fmt.Printf("url: %s\n", url)
 
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err);
+		fmt.Printf("get err: %s\n", err);
+	}
+	defer res.Body.Close()
+
+
+	data, err := ioutil.ReadAll(res.Body);
+	if err != nil {
+		fmt.Printf("reader err: %s\n", err);
 	}
 
-	defer res.Body.Close();
+	//fmt.Printf("data: %s\n", data);
 
-	body, err := ioutil.ReadAll(res.Body)
+	err = json.Unmarshal(data, &body)
+	if err != nil {
+		fmt.Printf("Unmarshal err: %s\n", err);
+	}
 
 	log.Print(body);
 	return 0

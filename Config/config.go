@@ -17,13 +17,14 @@ var Config struct {
 	Max_Spots int `json:"spots"`
 }
 
-var ConfigFileName = "../config.json";
+var ConfigFileName = "config.json";
 
 //If no config file has been created, create one
 func create_Config() {
 	conf, _ := os.Create(ConfigFileName)
 	defer conf.Close();
 
+	fmt.Print("Creating new config.json file");
 	fmt.Println("Eventbrite Configuration:");
 	fmt.Printf("Event ID:  "); fmt.Scan(Config.Event.Event_id);
 	fmt.Printf("Oathtoken: "); fmt.Scan(Config.Event.Oathtoken);
@@ -42,21 +43,22 @@ func create_Config() {
 //loads config file if it exists, otherwise it creates a new config
 func Init_Config() {
 	conf, err := os.Open(ConfigFileName)
-	defer conf.Close();
 
 	if err != nil {
 		if os.IsNotExist(err) {
-			fmt.Println(err);
-		} else {
 			create_Config()
 			return
+		} else {
+			fmt.Printf("init_config err: %s\n", err);
 		}
 	}
+
+	defer conf.Close();
 
 	//start decoding
 	decoder := json.NewDecoder(conf);
 	err = decoder.Decode(&Config)
 	if err != nil {
-		fmt.Println(err);
+		fmt.Printf("init_config decoder err: %s\n", err);
 	}
 }
